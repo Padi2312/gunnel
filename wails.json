@@ -1,0 +1,14 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "gunnel",
+  "outputfilename": "gunnel",
+  "frontend:install": "pnpm install",
+  "frontend:build": "pnpm run build",
+  "frontend:dev:watcher": "pnpm run dev",
+  "frontend:dev:serverUrl": "auto",
+  "author": {
+    "name": "padi2312",
+    "email": "patrick.arndt.99@web.de"
+  },
+  "wailsjsdir": "./frontend/src/lib"
+}
