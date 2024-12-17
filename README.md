@@ -5,19 +5,80 @@
 <h1 align="center">Gunnel</h1>
 
 <p align="center">
-  <strong>Easy SSH Portforwarder</strong>
+  <strong>Simple and Intuitive SSH Tunnel Manager</strong>
 </p>
 
-Gunnel is an easy-to-use SSH tunnel manager that allows you to create and manage SSH tunnels with ease. 
+# Overview
 
-You can easily connect to your remote servers and forward ports to your local machine.
+Gunnel is a cross-platform desktop application that makes managing SSH tunnels easy. Built with Go and Svelte, it provides a modern user interface to create, manage and monitor SSH port forwards without dealing with complex command line arguments.
 
 # Features
 
-- Create and manage SSH tunnels
-- Connect to remote servers
-- Forward ports to your local machine
+- 🚀 Easy-to-use graphical interface for SSH tunnels
+- 🔒 Secure SSH key authentication support
+- 🔄 Multiple concurrent tunnel support
+- 💾 Save and restore tunnel configurations
+- 🖥️ Cross-platform (Windows, macOS, Linux)
 
 # Installation
 
-TBD
+## Prerequisites
+
+- Go 1.21 or higher
+- Node.js 18+ and pnpm
+
+## Building
+
+To create production builds:
+
+```bash
+wails build
+```
+
+The built binaries will be available in the  `bin` directory.
+
+# Usage
+
+1. Launch Gunnel
+2. Create a new tunnel configuration with:
+   - Remote host details
+   - Local and remote ports
+   - Username
+3. Click "Connect" to establish the tunnel
+
+# Contributing
+
+Contributions are welcome! Please feel free to submit pull requests.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## Development Setup
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/gunnel.git
+cd gunnel
+```
+
+2. Install Wails CLI:
+```bash
+go install github.com/wailsapp/wails/v2/cmd/wails@latest
+```
+
+3. Start development server:
+```bash
+wails dev
+```
+
+# License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+# Acknowledgments
+
+- Built with [Wails](https://wails.io/)
+- UI powered by [Svelte](https://svelte.dev/)
