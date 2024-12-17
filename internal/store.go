@@ -109,6 +109,16 @@ func (s *Store) RemoveTunnel(id string) {
 	s.Save()
 }
 
+func (s *Store) EditTunnel(updatedTunnel Tunnel) {
+	for i, tunnel := range s.Config.Tunnels {
+		if tunnel.ID == updatedTunnel.ID {
+			s.Config.Tunnels[i] = updatedTunnel
+			break
+		}
+	}
+	s.Save()
+}
+
 func (s *Store) Save() {
 	// Open the file for writing
 	file, err := os.Create(path.Join(s.root, "gunnel.config.json"))
