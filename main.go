@@ -3,12 +3,15 @@ package main
 import (
 	"context"
 	"embed"
+	"fmt"
 	"gunnel/internal"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 )
+
+const version = "0.1.0"
 
 //go:embed all:frontend/build
 var assets embed.FS
@@ -22,7 +25,7 @@ func main() {
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:  "Gunnel",
+		Title:  fmt.Sprintf("Gunnel %s", version),
 		Width:  800,
 		Height: 600,
 		AssetServer: &assetserver.Options{
