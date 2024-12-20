@@ -9,22 +9,10 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-type Config struct {
-	Username          string   `json:"username"`
-	Tunnels           []Tunnel `json:"tunnels"`
-	SSHPrivateKeyPath string   `json:"sshPrivateKeyPath"`
-}
-
 type Store struct {
 	root   string
 	Config *Config
 	ctx    context.Context
-}
-
-// startup is called when the app starts. The context is saved
-// so we can call the runtime methods
-func (s *Store) Startup(ctx context.Context) {
-	s.ctx = ctx
 }
 
 func NewStore() *Store {
@@ -44,6 +32,12 @@ func NewStore() *Store {
 	return &Store{
 		root: root,
 	}
+}
+
+// startup is called when the app starts. The context is saved
+// so we can call the runtime methods
+func (s *Store) Startup(ctx context.Context) {
+	s.ctx = ctx
 }
 
 func (s *Store) GetConfig() *Config {
@@ -141,4 +135,23 @@ func (s *Store) SelectAndSetSSHPrivateKeyPath() string {
 	s.Save()
 
 	return s.Config.SSHPrivateKeyPath
+}
+
+func (s *Store) GetTunnelByID(id string) *Tunnel {
+	for _, tunnel := range s.Config.Tunnels {
+		if tunnel.ID == id {
+			return &tunnel
+		}
+	}
+	return nil
+}
+
+func (s *Store) UpdateTunnel(tunnel Tunnel) {
+	for i, t := range s.Config.Tunnels {
+		if t.ID == tunnel.ID {
+			s.Config.Tunnels[i] = tunnel
+			break
+		}
+	}
+	s.Save()
 }

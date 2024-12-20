@@ -83,7 +83,7 @@
 </script>
 
 <!-- <div class="container mx-auto p-4"> -->
-<div class="container mx-auto h-full">
+<div class="container mx-auto h-full space-y-2">
 	{#each getTunnels() as tunnel (tunnel.id)}
 		<Card class="flex items-center justify-between p-4">
 			<div class="flex items-center gap-4">
@@ -135,7 +135,7 @@
 						<div class="flex flex-col space-y-2 p-0">
 							<button
 								class="hover:bg-primary-foreground flex items-center space-x-2 rounded p-2 text-left text-sm outline-none ring-0"
-								onclick={() => goto(`/edit/${tunnel.id}`)}
+								onclick={() => goto(`/edit?id=${tunnel.id}`)}
 							>
 								<Pencil class="h-3 w-3" />
 								<span>Edit</span>
