@@ -10,7 +10,6 @@ import (
 	"runtime"
 	"sync"
 
-	"github.com/Microsoft/go-winio"
 	"golang.org/x/crypto/ssh"
 	"golang.org/x/crypto/ssh/agent"
 )
@@ -139,11 +138,7 @@ func getSSHConfig(username string) (*ssh.ClientConfig, net.Conn, error) {
 func NewSSHAgent() (agent.Agent, net.Conn, error) {
 	switch runtime.GOOS {
 	case "windows":
-		conn, err := winio.DialPipe(sshAgentPipeWindows, nil)
-		if err != nil {
-			return nil, nil, errors.New("could not connect to Windows SSH agent")
-		}
-		return agent.NewClient(conn), conn, nil
+		return windowsSSHAgent()
 	default: // Linux/Unix
 		authSock := os.Getenv("SSH_AUTH_SOCK")
 		if authSock == "" {

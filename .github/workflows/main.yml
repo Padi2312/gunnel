@@ -23,15 +23,15 @@ jobs:
       fail-fast: false
       matrix:
         build:
-          # - name: 'gunnel-linux'
-          #   platform:  'linux/amd64'
-          #   os: 'ubuntu-latest'
+          - name: 'gunnel-linux'
+            platform:  'linux/amd64'
+            os: 'ubuntu-latest'
           - name: 'gunnel-windows'
             platform:  'windows/amd64'
             os: 'windows-latest'
-          # - name: 'gunnel-macos'
-          #   platform:  'darwin/universal'
-          #   os: 'macos-latest'
+          - name: 'gunnel-macos'
+            platform:  'darwin/universal'
+            os: 'macos-latest'
     runs-on: ${{ matrix.build.os }} 
     steps:
       - name: Checkout
@@ -69,3 +69,4 @@ jobs:
         with:
           files: |
             */bin/*
+          tag_name: ${{ env.VERSION }}
