@@ -1,4 +1,4 @@
-name: Build and release dorcs 
+name: Build and release gunnel 
 on:
   push:
     branches:
@@ -15,7 +15,7 @@ jobs:
         run: |
           version=$(grep -o 'const version = "[^"]*"' main.go | cut -d'"' -f2)
           echo "Build version $version"
-          echo "VERSION=$version" >> $GITHUB_OUTPUT
+          echo "version=$version" >> $GITHUB_OUTPUT
 
   build-and-upload:
     needs: get-version
@@ -69,8 +69,8 @@ jobs:
 
       - name: Tag commit
         run: |
-          git tag ${{ steps.get-version.outputs.version }}
-          git push origin ${{ steps.get-version.outputs.version }}
+          git tag ${{ needs.get-version.outputs.version }}
+          git push origin ${{ needs.get-version.outputs.version }}
 
       - name: Download all artifacts
         uses: actions/download-artifact@v3
@@ -80,4 +80,4 @@ jobs:
         with:
           files: |
             */bin/*
-          tag_name: ${{ steps.get-version.outputs.version }}
+          tag_name: ${{ needs.get-version.outputs.version }}
