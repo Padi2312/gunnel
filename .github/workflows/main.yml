@@ -14,7 +14,8 @@ jobs:
         id: version
         run: |
           version=$(grep -o 'const version = "[^"]*"' main.go | cut -d'"' -f2)
-          echo "version=$version" >> $GITHUB_ENV
+          echo "Build version $version"
+          echo "VERSION=$version" >> $GITHUB_OUTPUT
 
   build-and-upload:
     needs: get-version
@@ -59,14 +60,24 @@ jobs:
             */bin/
             *\bin\*
 
+  create-release:
+    needs: build-and-upload
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Tag commit
         run: |
-          git tag  ${{ env.VERSION }}
-          git push origin  ${{ env.VERSION }}
+          git tag ${{ steps.get-version.outputs.version }}
+          git push origin ${{ steps.get-version.outputs.version }}
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
             */bin/*
-          tag_name: ${{ env.VERSION }}
+          tag_name: ${{ steps.get-version.outputs.version }}
