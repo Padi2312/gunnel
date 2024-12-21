@@ -6,6 +6,8 @@ on:
 jobs:
   get-version:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version}}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -15,10 +17,10 @@ jobs:
         run: |
           version=$(grep -o 'const version = "[^"]*"' main.go | cut -d'"' -f2)
           echo "Build version $version"
-          echo "version=$version" >> $GITHUB_ENV
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
   build-and-upload:
-    needs: get-version
+    needs: [get-version]
     name: Build and upload
     strategy:
       fail-fast: false
@@ -40,7 +42,7 @@ jobs:
 
       - name: Install pnpm
         run: |
-          echo "Building version ${{ env.version }}"
+          echo "Building version ${{ needs.get-version.outputs.version }}"
           npm install -g pnpm
 
       - name: Build wails
@@ -70,9 +72,9 @@ jobs:
 
       - name: Tag commit
         run: |
-          echo "Tagging commit with version ${{ env.version }}"
-          git tag ${{ env.version }}
-          git push origin ${{ env.version }}
+          echo "Tagging commit with version ${{needs.get-version.outputs.version }}"
+          git tag ${{needs.get-version.outputs.version }} 
+          git push origin ${{needs.get-version.outputs.version }}
 
       - name: Download all artifacts
         uses: actions/download-artifact@v3
@@ -82,4 +84,4 @@ jobs:
         with:
           files: |
             */bin/*
-          tag_name: ${{ env.version }}
+          tag_name: ${{needs.get-version.outputs.version }}
