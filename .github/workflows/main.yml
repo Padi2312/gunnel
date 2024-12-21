@@ -42,7 +42,6 @@ jobs:
 
       - name: Install pnpm
         run: |
-          echo "Building version ${{ needs.get-version.outputs.version }}"
           npm install -g pnpm
 
       - name: Build wails
@@ -64,7 +63,7 @@ jobs:
             *\bin\*
 
   create-release:
-    needs: [get-version,build-and-upload]
+    needs: [get-version, build-and-upload]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -72,16 +71,16 @@ jobs:
 
       - name: Tag commit
         run: |
-          echo "Tagging commit with version ${{needs.get-version.outputs.version }}"
           git tag ${{needs.get-version.outputs.version }} 
           git push origin ${{needs.get-version.outputs.version }}
 
       - name: Download all artifacts
         uses: actions/download-artifact@v3
+        with:
+          path: release_artifacts
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            */bin/*
-          tag_name: ${{needs.get-version.outputs.version }}
+          files: release_artifacts/**
+          tag_name: ${{ needs.get-version.outputs.version }}
