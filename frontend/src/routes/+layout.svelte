@@ -12,7 +12,7 @@
 		<div class="absolute">
 			<Sidebar.Trigger />
 		</div>
-		<div class="h-full w-full p-6">
+		<div class="h-full w-full p-2">
 			{@render children?.()}
 		</div>
 	</main>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import TunnelForm from '$lib/components/tunnelform/TunnelForm.svelte';
+	import TunnelForm from '$lib/components/gunnel/tunnelform/TunnelForm.svelte';
 	import { UpdateTunnel } from '$lib/wailsjs/go/internal/Store';
 	import { internal } from '$lib/wailsjs/go/models';
 	import type { PageData } from './$types';

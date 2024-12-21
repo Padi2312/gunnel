@@ -3,6 +3,7 @@ package internal
 import (
 	"context"
 	"fmt"
+	"strings"
 )
 
 type Handler struct {
@@ -31,6 +32,12 @@ func (h *Handler) GetActiveTunnels() []string {
 
 func (h *Handler) Connect(tunnel Tunnel, sshPrivateKeyPath string) error {
 	sshForwarder := &SSHForwarder{}
+	//check ssh port is given in tunnel.Host if not add default ssh port
+	if !strings.Contains(tunnel.Host, ":") {
+		tunnel.Host = tunnel.Host + ":22"
+	}
+
+
 	err := sshForwarder.Start(&SSHForwarderConfig{
 		Username:   tunnel.Username,
 		SSHHost:    tunnel.Host,

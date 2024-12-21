@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import TunnelForm from '../../lib/components/tunnelform/TunnelForm.svelte';
-	import { AddTunnel, GetConfig } from '../../lib/wailsjs/go/internal/Store';
-	import type { internal } from '../../lib/wailsjs/go/models';
+	import { AddTunnel, GetConfig } from '$lib/wailsjs/go/internal/Store';
+	import type { internal } from '$lib/wailsjs/go/models';
+	import TunnelForm from '$lib/components/gunnel/tunnelform/TunnelForm.svelte';
 
 	let tunnel: internal.Tunnel = $state({
 		id: crypto.randomUUID(),
@@ -57,7 +57,7 @@
 	};
 </script>
 
-<div class="container mx-auto">
+<div class="container mx-auto pb-4">
 	<h1 class="mb-4 text-xl">Add New Tunnel</h1>
 	<TunnelForm
 		bind:name={tunnel.name}

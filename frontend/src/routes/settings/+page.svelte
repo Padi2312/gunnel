@@ -1,15 +1,13 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
 	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
-	import { onMount } from 'svelte';
 	import {
 		GetConfig,
-		SelectAndSetSSHPrivateKeyPath,
 		SetUsername
-	} from '../../lib/wailsjs/go/internal/Store';
-	import type { internal } from '../../lib/wailsjs/go/models';
+	} from '$lib/wailsjs/go/internal/Store';
+	import type { internal } from '$lib/wailsjs/go/models';
+	import { onMount } from 'svelte';
 
 	let config: internal.Config = {
 		sshPrivateKeyPath: '',

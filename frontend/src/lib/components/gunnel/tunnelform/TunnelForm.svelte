@@ -134,6 +134,9 @@
 							bind:value={host}
 							class={errors.host ? 'border-red-500' : ''}
 						/>
+						{#if !host?.includes(':')}
+							<p class="text-xs text-muted-foreground mt-1">Port :22 will be used if not specified</p>
+						{/if}
 					</FormField>
 				</div>
 

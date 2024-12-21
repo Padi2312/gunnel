@@ -82,5 +82,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: release_artifacts/**
+          files: |
+            release_artifacts/gunnel.exe
+            release_artifacts/gunnel
           tag_name: ${{ needs.get-version.outputs.version }}
