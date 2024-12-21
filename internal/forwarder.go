@@ -1,13 +1,9 @@
 package internal
 
 import (
-	"errors"
-	"fmt"
 	"io"
 	"log"
 	"net"
-	"os"
-	"runtime"
 	"sync"
 
 	"golang.org/x/crypto/ssh"
@@ -136,18 +132,8 @@ func getSSHConfig(username string) (*ssh.ClientConfig, net.Conn, error) {
 
 // NewSSHAgent connects to the platform-specific SSH agent
 func NewSSHAgent() (agent.Agent, net.Conn, error) {
-	switch runtime.GOOS {
-	case "windows":
-		return windowsSSHAgent()
-	default: // Linux/Unix
-		authSock := os.Getenv("SSH_AUTH_SOCK")
-		if authSock == "" {
-			return nil, nil, fmt.Errorf("SSH_AUTH_SOCK is not set")
-		}
-		conn, err := net.Dial("unix", authSock)
-		if err != nil {
-			return nil, nil, errors.New("could not connect to Unix SSH agent")
-		}
-		return agent.NewClient(conn), conn, nil
-	}
+	// Either uses the Windows or Unix SSH agent
+	// depending on the platform the application is running on
+	// `win_ssh_agent.go` and `unix_ssh_agent.go` define the platform-specific implementations 
+	return GetSSHAgent()
 }
