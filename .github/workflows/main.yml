@@ -1,4 +1,4 @@
-name: Build and release gunnel 
+name: Build and release gunnel
 on:
   push:
     branches:
@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Get version
         id: version
         run: |
@@ -19,23 +19,23 @@ jobs:
           echo "Build version $version"
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
-  build-and-upload:
+  build:
     needs: [get-version]
     name: Build and upload
     strategy:
       fail-fast: false
       matrix:
         build:
-          - name: 'gunnel'
-            platform:  'linux/amd64'
-            os: 'ubuntu-latest'
-          - name: 'gunnel.exe'
-            platform:  'windows/amd64'
-            os: 'windows-latest'
+          - name: "gunnel"
+            platform: "linux/amd64"
+            os: "ubuntu-latest"
+          - name: "gunnel.exe"
+            platform: "windows/amd64"
+            os: "windows-latest"
           # - name: 'gunnel-macos'
           #   platform:  'darwin/universal'
           #   os: 'macos-latest'
-    runs-on: ${{ matrix.build.os }} 
+    runs-on: ${{ matrix.build.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -51,19 +51,19 @@ jobs:
           build-name: ${{ matrix.build.name }}
           build-platform: ${{ matrix.build.platform }}
           package: true
-          go-version: '1.23'
-          wails-version: 'v2.9.2'
-          node-version: '20.11.1'
+          go-version: "1.23"
+          wails-version: "v2.9.2"
+          node-version: "20.11.1"
 
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.build.name }}
           path: |
-            */bin/
-            *\bin\*
+            */bin/gunnel
+            */bin/gunnel.exe
 
   create-release:
-    needs: [get-version, build-and-upload]
+    needs: [get-version, build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
