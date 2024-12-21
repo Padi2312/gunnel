@@ -15,7 +15,7 @@ jobs:
         run: |
           version=$(grep -o 'const version = "[^"]*"' main.go | cut -d'"' -f2)
           echo "Build version $version"
-          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> $GITHUB_OUTPUT
 
   build-and-upload:
     needs: get-version
@@ -40,7 +40,7 @@ jobs:
 
       - name: Install pnpm
         run: |
-          echo "Building version ${{ needs.get-version.outputs.version }}"
+          echo "Building version ${{ jobs.get-version.outputs.version }}"
           npm install -g pnpm
 
       - name: Build wails
@@ -70,9 +70,9 @@ jobs:
 
       - name: Tag commit
         run: |
-          echo "Tagging commit with version ${{ needs.get-version.outputs.version }}"
-          git tag ${{ needs.get-version.outputs.version }}
-          git push origin ${{ needs.get-version.outputs.version }}
+          echo "Tagging commit with version ${{ jobs.get-version.outputs.version }}"
+          git tag ${{ jobs.get-version.outputs.version }}
+          git push origin ${{ jobs.get-version.outputs.version }}
 
       - name: Download all artifacts
         uses: actions/download-artifact@v3
@@ -82,4 +82,4 @@ jobs:
         with:
           files: |
             */bin/*
-          tag_name: ${{ needs.get-version.outputs.version }}
+          tag_name: ${{ jobs.get-version.outputs.version }}
