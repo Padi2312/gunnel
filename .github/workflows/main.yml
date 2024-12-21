@@ -61,7 +61,7 @@ jobs:
             *\bin\*
 
   create-release:
-    needs: build-and-upload
+    needs: [get-version,build-and-upload]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -69,6 +69,7 @@ jobs:
 
       - name: Tag commit
         run: |
+          echo "Tagging commit with version ${{ needs.get-version.outputs.version }}"
           git tag ${{ needs.get-version.outputs.version }}
           git push origin ${{ needs.get-version.outputs.version }}
 
