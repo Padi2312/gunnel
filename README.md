@@ -18,16 +18,28 @@ Gunnel is a cross-platform desktop application that makes managing SSH tunnels e
 - 🔒 Secure SSH key authentication support
 - 🔄 Multiple concurrent tunnel support
 - 💾 Save and restore tunnel configurations
-- 🖥️ Cross-platform (Windows, macOS, Linux)
+- 🖥️ Cross-platform (Windows, Linux)
 
 # Installation
 
-## Prerequisites
+## Download Binaries
+
+Pre-built binaries for Windows and Linux are available on the [Releases](https://github.com/padi2312/gunnel/releases) page.
+
+> [!IMPORTANT]
+> The application binaries are not signed, so you may need to bypass security warnings to run them.
+
+> [!TIP]
+> If you're security-conscious, consider building from source to have full control over the application.
+
+## Build from Source
+
+### Prerequisites
 
 - Go 1.21 or higher
 - Node.js 18+ and pnpm
 
-## Building
+### Building
 
 To create production builds:
 
