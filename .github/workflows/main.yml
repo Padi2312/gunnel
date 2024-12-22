@@ -1,17 +1,17 @@
-name: Build and release gunnel
+name: Build and release gunnel 
 on:
   push:
     branches:
       - main
 jobs:
   get-version:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     outputs:
       version: ${{ steps.version.outputs.version}}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+      
       - name: Get version
         id: version
         run: |
@@ -19,23 +19,23 @@ jobs:
           echo "Build version $version"
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
-  build:
+  build-and-upload:
     needs: [get-version]
     name: Build and upload
     strategy:
       fail-fast: false
       matrix:
         build:
-          - name: "gunnel"
-            platform: "linux/amd64"
-            os: "ubuntu-latest"
-          - name: "gunnel.exe"
-            platform: "windows/amd64"
-            os: "windows-latest"
+          - name: 'gunnel'
+            platform:  'linux/amd64'
+            os: 'ubuntu-22.04'
+          - name: 'gunnel.exe'
+            platform:  'windows/amd64'
+            os: 'windows-latest'
           # - name: 'gunnel-macos'
           #   platform:  'darwin/universal'
           #   os: 'macos-latest'
-    runs-on: ${{ matrix.build.os }}
+    runs-on: ${{ matrix.build.os }} 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -51,20 +51,20 @@ jobs:
           build-name: ${{ matrix.build.name }}
           build-platform: ${{ matrix.build.platform }}
           package: true
-          go-version: "1.23"
-          wails-version: "v2.9.2"
-          node-version: "20.11.1"
+          go-version: '1.23'
+          wails-version: 'v2.9.2'
+          node-version: '20.11.1'
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.build.name }}
           path: |
-            */bin/gunnel
-            */bin/gunnel.exe
+            */bin/
+            *\bin\*
 
   create-release:
-    needs: [get-version, build]
-    runs-on: ubuntu-latest
+    needs: [get-version, build-and-upload]
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -75,14 +75,13 @@ jobs:
           git push origin ${{needs.get-version.outputs.version }}
 
       - name: Download all artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: release_artifacts
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            release_artifacts/gunnel.exe
-            release_artifacts/gunnel
+          files: release_artifacts/**
           tag_name: ${{ needs.get-version.outputs.version }}
+
